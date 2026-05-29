@@ -1,15 +1,44 @@
-/* ===== 全体 ===== */
-* {
+/* ===== Google Fonts ===== */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+JP:wght@400;700&display=swap');
+
+/* ===== CSS Variables ===== */
+:root {
+    --accent:     #00ffaa;
+    --accent2:    #00b7ff;
+    --bg:         #0a0a0a;
+    --surface:    #111111;
+    --card-bg:    rgba(20, 20, 20, 0.6);
+    --border:     rgba(0, 255, 170, 0.2);
+    --text:       #f0f0f0;
+    --muted:      #888;
+    --neon-green: 0 0 20px rgba(0,255,170,0.4), 0 0 60px rgba(0,255,170,0.15);
+    --neon-blue:  0 0 20px rgba(0,183,255,0.35), 0 0 60px rgba(0,183,255,0.12);
+}
+
+/* ===== Reset & Base ===== */
+*, *::before, *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Inter", sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
 }
 
 body {
-    background: #0e0e0e;
-    color: #fff;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
     overflow-x: hidden;
+    line-height: 1.7;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
 }
 
 /* ===== NAVBAR ===== */
@@ -17,331 +46,499 @@ body {
     position: fixed;
     top: 0;
     width: 100%;
-    padding: 20px 40px;
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(10px);
+    padding: 16px 40px;
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
     display: flex;
+    align-items: center;
     justify-content: space-between;
     z-index: 1000;
+    transition: background 0.3s ease, padding 0.3s ease;
+}
+
+.navbar.scrolled {
+    background: rgba(0, 0, 0, 0.75);
+    padding: 12px 40px;
+}
+
+.logo {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1.5rem;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    text-shadow: 0 0 12px rgba(0,255,170,0.5);
+    white-space: nowrap;
 }
 
 .nav-links {
     list-style: none;
     display: flex;
-    gap: 25px;
+    gap: 32px;
 }
 
 .nav-links a {
-    color: #fff;
+    color: var(--text);
     text-decoration: none;
-    opacity: 0.8;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.75;
     cursor: pointer;
+    position: relative;
+    transition: opacity 0.2s;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--accent);
+    transition: width 0.3s ease;
 }
 
 .nav-links a:hover {
     opacity: 1;
 }
 
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+/* ハンバーガーメニュー（スマホ用） */
+.nav-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 4px;
+    background: none;
+    border: none;
+}
+
+.nav-toggle span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--text);
+    border-radius: 2px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; }
+.nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
 /* ===== HERO ===== */
 .hero {
-    height: 100vh;
+    position: relative;
+    height: 100svh;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-}
-
-.hero-content h1 {
-    font-size: 3.5rem;
-}
-
-.hero-content p {
-    margin-top: 10px;
-    opacity: 0.85;
-}
-.hero {
-    position: relative;
-    height: 100vh;
     overflow: hidden;
 }
 
-/* 動画背景 */
 .bg-video {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.bg-video::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.35) 0%,
+        rgba(0,0,0,0.2) 40%,
+        rgba(0,0,0,0.7) 100%
+    );
+}
+
+.bg-video video {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    z-index: -1;
+    object-position: center center;
+    pointer-events: none;
 }
-.bg-video iframe {
-    width: 100%;
-    height: 100%;
-    pointer-events: none; /* クリックできないようにする */
-}
-/* コンテンツを前に出す */
+
 .hero-content {
     position: relative;
     z-index: 1;
+    padding: 0 20px;
 }
-/* CTAボタン */
+
+.hero-content img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    border: 2px solid var(--accent);
+    box-shadow: var(--neon-green);
+    object-fit: cover;
+}
+
+.hero-content h1 {
+    font-family: 'Bebas Neue', cursive;
+    font-size: clamp(2.8rem, 8vw, 5.5rem);
+    letter-spacing: 0.06em;
+    text-shadow: 0 0 30px rgba(0,255,170,0.35);
+    line-height: 1.05;
+}
+
+.hero-content p {
+    margin-top: 12px;
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+    opacity: 0.75;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+}
+
 .cta {
-    margin-top: 25px;
-    padding: 12px 30px;
-    background: #00ffaa;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
+    display: inline-block;
+    margin-top: 32px;
+    padding: 14px 40px;
+    background: transparent;
+    border: 2px solid var(--accent);
+    border-radius: 4px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
     cursor: pointer;
-    transition: 0.2s;
-    color: #000;
+    transition: background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
 }
 
 .cta:hover {
-    transform: translateY(-2px);
-    background: #00ffcc;
+    background: var(--accent);
+    color: #000;
+    box-shadow: var(--neon-green);
+    transform: translateY(-3px);
 }
 
 /* ===== FEATURES ===== */
 .features {
-    padding: 100px 40px;
-    background: #111;
+    padding: clamp(60px, 10vw, 120px) clamp(20px, 5vw, 80px);
+    background: var(--surface);
     text-align: center;
 }
 
 .features h2 {
-    font-size: 2.5rem;
-    margin-bottom: 50px;
-    text-shadow: 0 0 12px rgba(0, 180, 255, 0.45);
+    font-family: 'Bebas Neue', cursive;
+    font-size: clamp(2rem, 5vw, 3rem);
+    letter-spacing: 0.1em;
+    margin-bottom: 60px;
+    text-shadow: 0 0 16px rgba(0,180,255,0.45);
 }
 
-/* グリッド */
 .feature-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 35px;
+    gap: 28px;
     max-width: 1100px;
-    margin: auto;
+    margin: 0 auto;
 }
 
-/* カードデザイン（透過 × ネオンの軽いアクセント） */
 .feature-card {
-    background: rgba(25, 25, 25, 0.55);
-    backdrop-filter: blur(6px);
-    border-radius: 14px;
-    padding: 35px;
-    border: 1px solid rgba(0, 180, 255, 0.25);
-    box-shadow: 0 0 18px rgba(0, 180, 255, 0.25),
-                inset 0 0 10px rgba(0, 180, 255, 0.15);
-    transition: 0.35s ease;
+    background: var(--card-bg);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 16px;
+    padding: 40px 28px;
+    border: 1px solid var(--border);
+    box-shadow: var(--neon-blue);
+    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
     opacity: 0;
     transform: translateY(30px);
 }
 
-/* ホバー */
+.feature-card h3 {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1.5rem;
+    letter-spacing: 0.08em;
+    margin-bottom: 16px;
+    color: var(--accent2);
+}
+
+.feature-card p {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    line-height: 1.8;
+}
+
 .feature-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 0 30px rgba(0, 180, 255, 0.35),
-                0 0 70px rgba(0, 255, 170, 0.2);
-    border-color: rgba(0, 255, 170, 0.35);
+    transform: translateY(-8px);
+    box-shadow: 0 0 35px rgba(0,180,255,0.4), 0 0 80px rgba(0,255,170,0.18);
+    border-color: rgba(0,255,170,0.4);
 }
 
-/* フェードインアニメ（読み込み時の登場） */
 @keyframes featuresFade {
-    0% { opacity: 0; transform: translateY(40px); }
-    100% { opacity: 1; transform: translateY(0); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-/* 遅延アニメーション */
-.features .feature-card:nth-child(1) { animation: featuresFade 0.8s ease forwards 0.1s; }
-.features .feature-card:nth-child(2) { animation: featuresFade 0.8s ease forwards 0.25s; }
-.features .feature-card:nth-child(3) { animation: featuresFade 0.8s ease forwards 0.4s; }
+.features .feature-card:nth-child(1) { animation: featuresFade 0.7s ease forwards 0.1s; }
+.features .feature-card:nth-child(2) { animation: featuresFade 0.7s ease forwards 0.25s; }
+.features .feature-card:nth-child(3) { animation: featuresFade 0.7s ease forwards 0.4s; }
 
-/* ===== JOIN ===== */
-.join {
-    text-align: center;
-    padding: 100px 40px;
-}
-
-/* ===== DISCORD - 背景設定とオーバーレイ ===== */
-/* 背景画像は「img/beg_discord_bg.jpg」などに置き換えてください */
+/* ===== DISCORD / JOIN ===== */
 .discord {
-    padding: 80px 40px;
+    position: relative;
+    padding: 0;
     text-align: center;
-    position: relative; /* オーバーレイのために追加 */
-    background: url("../img/back.gif") center/cover no-repeat; /* 背景画像を設定 */
-    background-attachment: fixed; /* (任意)スクロール時に固定する */
+    background: url("../img/back.gif") center / cover no-repeat;
+    background-attachment: fixed;
 }
 
-/* 背景を暗くして文字を見やすくするためのオーバーレイ */
 .discord-overlay {
-    background-color: rgba(0, 0, 0, 0.6); /* 半透明の黒 */
-    padding: 80px 0; /* paddingをここで調整 */
+    background: rgba(0, 0, 0, 0.65);
+    padding: clamp(60px, 10vw, 100px) 20px;
+    backdrop-filter: blur(2px);
 }
 
 .discord h2 {
-    font-size: 2.5rem;
-    color: #fff;
-    text-shadow: 0 0 10px rgba(0, 255, 170, 0.5); /* タイトルも少し光らせる */
+    font-family: 'Bebas Neue', cursive;
+    font-size: clamp(2rem, 5vw, 3rem);
+    letter-spacing: 0.1em;
+    margin-bottom: 40px;
+    text-shadow: 0 0 12px rgba(0,255,170,0.5);
 }
 
-/* ===== Discordカードデザインの改善 (ネオングラスエフェクト) ===== */
+.sns-grid {
+    display: flex;
+    justify-content: center;
+    padding: 0 20px;
+}
+
 .discord-card {
-    /* 既存のfeature-cardと独立したスタイルにするため、新しいクラスに */
-    background: rgba(46, 46, 46, 0.4); /* 半透明の背景 */
-    backdrop-filter: blur(5px); /* 背景をぼかす */
-    padding: 30px;
-    border-radius: 16px;
-    border: 1px solid rgba(0, 255, 170, 0.3); /* 枠線も光らせる */
-    transition: 0.5s;
-    max-width: 350px;
-    margin: auto; /* 中央揃え */
-    box-shadow: 0 0 20px rgba(0, 255, 170, 0.5), 0 0 50px rgba(0, 183, 255, 0.3); /* ネオン効果 */
+    background: rgba(15, 15, 15, 0.55);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 40px 36px;
+    border-radius: 18px;
+    border: 1px solid rgba(0,255,170,0.3);
+    box-shadow: var(--neon-green);
+    max-width: 360px;
+    width: 100%;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.discord-card h3 {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1.8rem;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+    color: #7289da;
+}
+
+.discord-card p {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-bottom: 24px;
 }
 
 .discord-card:hover {
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 0 30px rgba(0, 255, 170, 0.7), 0 0 70px rgba(0, 183, 255, 0.5);
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 0 35px rgba(0,255,170,0.6), 0 0 80px rgba(114,137,218,0.3);
 }
 
-/* Discordボタンの改善 */
 .discord-btn {
-    background: linear-gradient(45deg, #00ffaa, #00b7ff, #7289da); /* Discordカラーも取り入れる */
+    background: linear-gradient(135deg, #00ffaa 0%, #00b7ff 50%, #7289da 100%);
     border: none;
-    padding: 14px 30px; /* パディングを少し大きく */
+    padding: 14px 32px;
     border-radius: 8px;
-    font-weight: bold;
+    font-weight: 700;
     cursor: pointer;
-    transition: 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    transition: filter 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
 }
 
 .discord-btn:hover {
+    filter: brightness(1.15);
     transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
-    filter: brightness(1.1);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.6);
 }
 
 .dis-link {
     color: #fff;
     text-decoration: none;
-    font-size: 1.1rem;
+    font-size: 1rem;
+    font-weight: 700;
     display: flex;
     align-items: center;
     gap: 8px;
 }
-/* ===== ABOUT ===== */
-.About {
-    padding: 100px 40px;
-    background: #0e0e0e;
-    text-align: center;
-}
-
-.About h2 {
-    font-size: 2.5rem;
-    margin-bottom: 50px;
-    text-shadow: 0 0 12px rgba(0, 255, 170, 0.4);
-}
-
-/* グラスカード風デザイン */
-.About .feature-card {
-    background: rgba(30, 30, 30, 0.45);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(0, 255, 170, 0.2);
-    box-shadow: 0 0 15px rgba(0, 255, 170, 0.2),
-                inset 0 0 10px rgba(0, 255, 170, 0.1);
-    padding: 35px;
-    border-radius: 15px;
-    transition: 0.4s ease;
-    opacity: 0;
-    transform: translateY(30px);
-}
-
-/* ホバー効果 */
-.About .feature-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 0 30px rgba(0, 255, 170, 0.35),
-                0 0 60px rgba(0, 180, 255, 0.25);
-    border-color: rgba(0, 255, 170, 0.35);
-}
-
-/* フェードインアニメーション */
-@keyframes aboutFade {
-    0% { opacity: 0; transform: translateY(40px); }
-    100% { opacity: 1; transform: translateY(0); }
-}
-
-.About .feature-card:nth-child(1) { animation: aboutFade 0.8s ease forwards 0.1s; }
-.About .feature-card:nth-child(2) { animation: aboutFade 0.8s ease forwards 0.3s; }
-.About .feature-card:nth-child(3) { animation: aboutFade 0.8s ease forwards 0.5s; }
 
 /* ===== FOOTER ===== */
-        footer {
-            background-color: #333;
-            color: #fff;
-        text-align: left;
-        padding: 20px;
-        width: 100%;
-        position: relative;
-        }
+footer {
+    background: #0d0d0d;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 48px 40px 32px;
+    color: var(--text);
+}
 
-        .footer-container {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: flex-start;
-            padding-left: 30px; /* 左側に余白を追加 */
-        }
+.footer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    max-width: 900px;
+}
 
-        #foot-img {
-            padding-left: 30px;
-            width: 80px;
-            margin-bottom: 10px;
-        }
-        #foot16-img {
-            padding-left: 30px;
-            width: 100px;
-            margin-bottom: 10px;
-        }
-        .footer-nav {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            margin-bottom: 10px;
-        }
+#foot-img {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 16px;
+    border: 1px solid var(--border);
+}
 
-        .footer-nav a {
-            color: #ccc;
-            text-decoration: none;
-            font-size: 14px;
-            display: block;
-            padding-left: 30px; /* 各リンクにも少し余白を */
-        }
+#foot16-img {
+    width: 80px;
+    margin: 16px 0 8px;
+}
 
-        .footer-nav a:hover {
-            text-decoration: underline;
-            color: #fff;
-        }
-                /* 右カラム（説明文） */
-        .footer-info {
-            max-width: 450px;
-            color: #ccc;
-            font-size: 14px;
-            line-height: 1.7;
-        }
+#sted-img {
+    width: 160px;
+    height: auto;
+    margin: 8px 0;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
 
-        .footer-info p {
-            margin-bottom: 10px;
-        }
-        .footer-text {
-            color: #808080;
-            font-size: 12px;
-            padding-left: 30px; /* 余白を統一 */
+#sted-img:hover {
+    opacity: 1;
+}
 
-        }
-        #sted-img{
-            width: 200px;
-            height: auto;
-            padding-left: 10px;
-        }
+.footer-nav {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px 20px;
+    margin-bottom: 16px;
+}
+
+.footer-nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.82rem;
+    transition: color 0.2s;
+}
+
+.footer-nav a:hover {
+    color: var(--accent);
+}
+
+.footer-info {
+    color: var(--muted);
+    font-size: 0.8rem;
+    line-height: 1.9;
+    margin-bottom: 8px;
+}
+
+.footer-text {
+    color: #555;
+    font-size: 0.75rem;
+    line-height: 1.9;
+}
+
+/* ===== RESPONSIVE ===== */
+
+/* タブレット */
+@media (max-width: 900px) {
+    .feature-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* スマホ */
+@media (max-width: 640px) {
+    /* Navbar */
+    .navbar {
+        padding: 14px 20px;
+        align-items: center;
+    }
+
+    .navbar.scrolled {
+        padding: 10px 20px;
+    }
+
+    .nav-toggle {
+        display: flex;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 65%;
+        max-width: 280px;
+        height: 100vh;
+        flex-direction: column;
+        justify-content: center;
+        gap: 28px;
+        background: rgba(5,5,5,0.97);
+        backdrop-filter: blur(20px);
+        padding: 80px 40px;
+        transition: right 0.35s cubic-bezier(0.77,0,0.175,1);
+        border-left: 1px solid var(--border);
+    }
+
+    .nav-links.open {
+        right: 0;
+    }
+
+    .nav-links a {
+        font-size: 1.1rem;
+        opacity: 0.9;
+    }
+
+    /* Hero */
+    .hero-content img {
+        width: 70px;
+        height: 70px;
+    }
+
+    /* Features */
+    .features {
+        padding: 70px 20px;
+    }
+
+    .feature-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    /* Discord */
+    .discord-overlay {
+        padding: 60px 16px;
+    }
+
+    /* Footer */
+    footer {
+        padding: 40px 20px 28px;
+    }
+
+    .footer-nav {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .footer-nav a {
+        font-size: 0.85rem;
+    }
+}

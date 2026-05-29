@@ -1,168 +1,167 @@
-/* ===== 全体 ===== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Inter", sans-serif;
+/* law/style.css - プライバシーポリシーページ用 */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+JP:wght@400;700&display=swap');
+
+:root {
+    --accent:    #00ffaa;
+    --accent2:   #00b7ff;
+    --bg:        #0a0a0a;
+    --surface:   #111111;
+    --card-bg:   rgba(20, 20, 20, 0.7);
+    --border:    rgba(0, 255, 170, 0.2);
+    --text:      #f0f0f0;
+    --muted:     #888;
 }
 
-body {
-    background: #0e0e0e;
-    color: #fff;
-    overflow-x: hidden;
+*, *::before, *::after {
+    margin: 0; padding: 0;
+    box-sizing: border-box;
 }
+
+html { scroll-behavior: smooth; }
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    overflow-x: hidden;
+    line-height: 1.8;
+}
+
+img { max-width: 100%; height: auto; display: block; }
 
 /* ===== NAVBAR ===== */
 .navbar {
     position: fixed;
     top: 0;
     width: 100%;
-    padding: 20px 40px;
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(10px);
+    padding: 16px 40px;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
     display: flex;
-    justify-content: space-between;
+    align-items: center;
     z-index: 1000;
 }
 
-/* ===== FEATURES ===== */
+.logo {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1.4rem;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    text-shadow: 0 0 12px rgba(0,255,170,0.5);
+}
+
+/* ===== FEATURES (プライバシーポリシー本文) ===== */
 .features {
-    padding: 100px 40px;
-    background: #111;
+    padding: clamp(80px, 12vw, 130px) clamp(16px, 5vw, 60px) 80px;
+    background: var(--surface);
 }
 
 .features h2 {
-    font-size: 2.5rem;
-    margin-bottom: 50px;
-    text-shadow: 0 0 12px rgba(0, 180, 255, 0.45);
+    font-family: 'Bebas Neue', cursive;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    letter-spacing: 0.1em;
+    margin-bottom: 48px;
+    text-shadow: 0 0 16px rgba(0,180,255,0.45);
+    text-align: center;
 }
 
-/* グリッド */
 .feature-grid {
     display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    gap: 35px;
-    max-width: 1100px;
-    margin: auto;
+    grid-template-columns: 1fr;
+    gap: 0;
+    max-width: 860px;
+    margin: 0 auto;
 }
 
-/* カードデザイン（透過 × ネオンの軽いアクセント） */
 .feature-card {
-    background: rgba(25, 25, 25, 0.55);
-    backdrop-filter: blur(6px);
-    border-radius: 14px;
-    padding: 35px;
-    border: 1px solid rgba(0, 180, 255, 0.25);
-    box-shadow: 0 0 18px rgba(0, 180, 255, 0.25),
-                inset 0 0 10px rgba(0, 180, 255, 0.15);
-    transition: 0.35s ease;
-    opacity: 0;
-    transform: translateY(30px);
-}
-
-/* ホバー */
-.feature-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 0 30px rgba(0, 180, 255, 0.35),
-                0 0 70px rgba(0, 255, 170, 0.2);
-    border-color: rgba(0, 255, 170, 0.35);
-}
-
-/* フェードインアニメ（読み込み時の登場） */
-@keyframes featuresFade {
-    0% { opacity: 0; transform: translateY(40px); }
-    100% { opacity: 1; transform: translateY(0); }
-}
-
-/* 遅延アニメーション */
-.features .feature-card:nth-child(1) { animation: featuresFade 0.8s ease forwards 0.1s; }
-.features .feature-card:nth-child(2) { animation: featuresFade 0.8s ease forwards 0.25s; }
-.features .feature-card:nth-child(3) { animation: featuresFade 0.8s ease forwards 0.4s; }
-/* グラスカード風デザイン */
-.feature-card {
-    background: rgba(30, 30, 30, 0.45);
+    background: var(--card-bg);
     backdrop-filter: blur(8px);
-    border: 1px solid rgba(0, 255, 170, 0.2);
-    box-shadow: 0 0 15px rgba(0, 255, 170, 0.2),
-                inset 0 0 10px rgba(0, 255, 170, 0.1);
-    padding: 35px;
-    border-radius: 15px;
-    transition: 0.4s ease;
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 16px;
+    padding: clamp(28px, 5vw, 48px);
+    border: 1px solid var(--border);
+    box-shadow: 0 0 20px rgba(0,255,170,0.12), inset 0 0 12px rgba(0,255,170,0.06);
+    animation: cardFadeIn 0.7s ease forwards 0.1s;
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(20px);
 }
 
-/* フェードインアニメーション */
-@keyframes aboutFade {
-    0% { opacity: 0; transform: translateY(40px); }
-    100% { opacity: 1; transform: translateY(0); }
+@keyframes cardFadeIn {
+    to { opacity: 1; transform: translateY(0); }
 }
+
+/* 本文タイポグラフィ */
+.feature-card h3 {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1.3rem;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    margin: 28px 0 10px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid rgba(0,255,170,0.15);
+}
+
+.feature-card h3:first-child { margin-top: 0; }
+
+.feature-card h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--accent2);
+    margin: 18px 0 6px;
+}
+
+.feature-card p {
+    font-size: 0.88rem;
+    color: rgba(240,240,240,0.8);
+    line-height: 1.9;
+}
+
 /* ===== FOOTER ===== */
-        footer {
-            background-color: #333;
-            color: #fff;
-        text-align: left;
-        padding: 20px;
-        width: 100%;
-        position: relative;
-        }
+footer {
+    background: #0d0d0d;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 40px clamp(16px, 5vw, 40px) 28px;
+}
 
-        .footer-container {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: flex-start;
-            padding-left: 30px; /* 左側に余白を追加 */
-        }
+.footer-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-width: 860px;
+}
 
-        #foot-img {
-            padding-left: 30px;
-            width: 80px;
-            margin-bottom: 10px;
-        }
-        #foot16-img {
-            padding-left: 30px;
-            width: 100px;
-            margin-bottom: 10px;
-        }
-        .footer-nav {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            margin-bottom: 10px;
-        }
+#foot-img {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 14px;
+    border: 1px solid var(--border);
+}
 
-        .footer-nav a {
-            color: #ccc;
-            text-decoration: none;
-            font-size: 14px;
-            display: block;
-            padding-left: 30px; /* 各リンクにも少し余白を */
-        }
+#foot16-img { width: 72px; margin: 14px 0 8px; }
 
-        .footer-nav a:hover {
-            text-decoration: underline;
-            color: #fff;
-        }
-                /* 右カラム（説明文） */
-        .footer-info {
-            max-width: 450px;
-            color: #ccc;
-            font-size: 14px;
-            line-height: 1.7;
-        }
+#sted-img { width: 140px; height: auto; margin: 8px 0; opacity: 0.7; }
+#sted-img:hover { opacity: 1; }
 
-        .footer-info p {
-            margin-bottom: 10px;
-        }
-        .footer-text {
-            color: #808080;
-            font-size: 12px;
-            padding-left: 30px; /* 余白を統一 */
+.footer-info {
+    color: var(--muted);
+    font-size: 0.8rem;
+    line-height: 1.9;
+    margin-bottom: 8px;
+}
 
-        }
-        #sted-img{
-            width: 200px;
-            height: auto;
-            padding-left: 10px;
-        }
+.footer-text {
+    color: #555;
+    font-size: 0.73rem;
+    line-height: 1.9;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 640px) {
+    .navbar { padding: 14px 20px; }
+    .features { padding: 80px 16px 60px; }
+    .feature-card { padding: 24px 20px; }
+}
