@@ -382,6 +382,130 @@ img {
     gap: 8px;
 }
 
+/* ===== GALLERY ===== */
+.gallery {
+    padding: clamp(60px, 10vw, 120px) 0;
+    background: #0a0a0a;
+    text-align: center;
+    overflow: hidden;
+}
+
+.gallery h2 {
+    font-family: 'Bebas Neue', cursive;
+    font-size: clamp(2rem, 5vw, 3rem);
+    letter-spacing: 0.1em;
+    margin-bottom: 48px;
+    text-shadow: 0 0 16px rgba(0,255,170,0.4);
+}
+
+.gallery-track-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 clamp(16px, 4vw, 60px);
+}
+
+.gallery-track {
+    display: flex;
+    gap: 20px;
+    overflow: hidden;
+    scroll-behavior: smooth;
+    width: 100%;
+}
+
+.gallery-item {
+    flex: 0 0 calc(33.333% - 14px);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(0,255,170,0.15);
+    box-shadow: 0 0 16px rgba(0,255,170,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    aspect-ratio: 16 / 9;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.gallery-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0 28px rgba(0,255,170,0.3);
+}
+
+.gallery-item:hover img {
+    transform: scale(1.04);
+}
+
+/* 矢印ボタン */
+.gallery-arrow {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(0,255,170,0.4);
+    background: rgba(0,0,0,0.6);
+    color: #00ffaa;
+    font-size: 1.1rem;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    transition: background 0.2s, box-shadow 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gallery-arrow:hover {
+    background: rgba(0,255,170,0.15);
+    box-shadow: 0 0 14px rgba(0,255,170,0.4);
+}
+
+.gallery-arrow:disabled {
+    opacity: 0.25;
+    cursor: default;
+}
+
+/* ドットインジケーター */
+.gallery-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 28px;
+}
+
+.gallery-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.gallery-dot.active {
+    background: #00ffaa;
+    transform: scale(1.3);
+    box-shadow: 0 0 8px rgba(0,255,170,0.6);
+}
+
+/* スマホ：1枚表示 */
+@media (max-width: 640px) {
+    .gallery-item {
+        flex: 0 0 100%;
+    }
+}
+
+/* タブレット：2枚表示 */
+@media (min-width: 641px) and (max-width: 900px) {
+    .gallery-item {
+        flex: 0 0 calc(50% - 10px);
+    }
+}
+
 /* ===== FOOTER ===== */
 footer {
     background: #0d0d0d;

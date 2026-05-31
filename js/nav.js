@@ -17,6 +17,8 @@ $(document).ready(function () {
     $("#nav-fe").on("click",   function () { scrollTo("#features"); });
     $("#nav-dis").on("click",  function () { scrollTo("#discord"); });
     $("#nav-about").on("click",function () { scrollTo("#About"); });
+    // nav.js に追加
+$("#nav-gallery").on("click", function () { scrollTo("#gallery"); });
 
     // CTAボタン
     $("#cta").on("click", function () { scrollTo("#discord"); });
