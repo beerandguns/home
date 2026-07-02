@@ -45,7 +45,9 @@ img { max-width: 100%; height: auto; display: block; }
 }
 
 .logo {
-    font-family: 'Bebas Neue', cursive;
+    font-style: normal;
+    font-family: "Black Ops One", system-ui;
+    font-weight: 400;
     font-size: 1.4rem;
     letter-spacing: 0.08em;
     color: var(--accent);
